@@ -10,12 +10,33 @@
 ## Setup
 1. Go to **Route53** and register new domain (ex. `mydomain.com`). If you think you will keep it, recommend setting up **automatic renewal**.
 2. Go to **S3** and make new bucket that perfectly matches that domain name: `mydomain.com`. Enable and configure it with the following:
-  * TBD
-  * TBD
+* **Properties tab** > Enable Static Hosting > Enable
+* **Properties tab** > Hosting type > "Bucket hosting"
+* **Permissions tab** > Block all public access > Off
+* **Permissions tab** > Bucket Policy > (past the following:)
+  <details>
+    <summary><i>(paste this but with "Resource" url changed)</i></summary>
+    <pre>
+      {
+          "Version": "2012-10-17",
+          "Statement": [
+              {
+                  "Sid": "AddPerm",
+                  "Effect": "Allow",
+                  "Principal": "*",
+                  "Action": "s3:GetObject",
+                  "Resource": "arn:aws:s3:::mydomain.com/*"
+              }
+          ]
+      }
+    </pre>
+  </details>
+
 3. On that `mydomain.com` S3 bucket, upload all of the contents of your website. Test it worked and can be accessed from the internet through the link provided on the **Properties** tab, ex: http://mydomain.com.s3-website-us-east-1.amazonaws.com. If it does not work, check the settings of the bucket.
-  * TBD
-  * TBD
 4. *OPTIONALLY*, if you desire a **"www."** option as well that will redirect to your "mydomain.com" in **S3** create another called `www.mydomain.com` with the following settings:
+  * **Properties tab** > Enable Static Hosting > Enable
+  * **Properties tab** > Hosting type > "Redirect request"
+  * **Properties tab** > Bucket website endpoint > Point to your `mydomain.com` S3 bucket
 5. If you wanted HTTP only you could just update Route53 records to point to the S3 buckets, but for HTTPS, next go to **Cloudfront**.
 6. Create a new **Cloudfront Distribution** with the following settings:
   * Scroll to the very bottom and select **"Pay as you go"** NOT "Free". Can't explain why, it just poses weird boundaries for no reason; it's still free.
