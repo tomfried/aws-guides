@@ -5,6 +5,7 @@
 * ~$0.04 in S3
 * $0.50 for Route53
 * ~$1.25 for domain (billed as $15/year for .com domain)
+
 **TOTAL = <$2/month** (or $0.55/month with a once a year $15 charge)
 
 ## Setup
